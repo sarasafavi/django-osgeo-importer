@@ -66,7 +66,6 @@
 
         <wz-step title="Enable Time?">
             <h3><strong>Does this dataset have time attributes?</strong></h3>
-
             <div class="btn-group">
                 <label class="btn btn-success" ng-model="layer.configuration_options.configureTime" uib-btn-radio="true">Yes</label>
                 <label class="btn" ng-model="layer.configuration_options.configureTime" uib-btn-radio="false">No</label>
@@ -102,7 +101,13 @@
             </form>
         </wz-step>
         <wz-step title="Permissions" wz-disabled="{{appending(true)}}">
+<<<<<<< 6587237b875b62bf1e845bd4625f4737fa4ae97e
             <h3><strong>Enable version history?</strong></h3>
+=======
+            <img class="import-wizard-image" ng-src="static/mapstory/img/edit.png"/>
+            <h3><strong>Allow other users to edit this data?</strong></h3>
+            <p>StoryLayers are better when multiple authors work together.  Would you like to enable editing?</p>
+>>>>>>> Set staticUrl explicitly in partials
             <div class="btn-group">
                 <label class="btn btn-success"  ng-model='layer.configuration_options.editable' uib-btn-radio="true">Yes</label>
                 <label class="btn" ng-model='layer.configuration_options.editable' uib-btn-radio="false">No</label>
