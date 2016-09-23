@@ -51,8 +51,7 @@ class UploadedLayerResource(ModelResource):
         return configuration_options
 
     def import_layer(self, request, pk=None, **kwargs):
-        """
-        Imports a layer
+        """Imports a layer
         """
         self.method_check(request, allowed=['post'])
 
