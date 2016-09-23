@@ -179,8 +179,8 @@ class UploaderTests(DjagnoOsgeoMixin):
         self.assertEqual(content['id'], 1)
 
         # Configure Uploaded Files
-        uploadid = content['id']
-        upload_layers = UploadLayer.objects.filter(upload_id=uploadid)
+        upload_id = content['id']
+        upload_layers = UploadLayer.objects.filter(upload_id=upload_id)
 
         for upload_layer in upload_layers:
             for config in configuration_options:
@@ -241,13 +241,13 @@ class UploaderTests(DjagnoOsgeoMixin):
                ]
         )
         self.assertEqual(6, upload['count'])
-        uploadid = upload['id']
-        uploadobj = UploadedData.objects.get(pk=uploadid)
-        uplayers = UploadLayer.objects.filter(upload=uploadid)
+        upload_id = upload['id']
+        upload_obj = UploadedData.objects.get(pk=upload_id)
+        uplayers = UploadLayer.objects.filter(upload=upload_id)
         layerid = uplayers[0].pk
 
-        upfiles_cnt = UploadFile.objects.filter(upload=uploadid).count()
-        self.assertEqual(6,upfiles_cnt)
+        upfiles_count = UploadFile.objects.filter(upload=upload_id).count()
+        self.assertEqual(6,upfiles_count)
 
         layer = Layer.objects.get(pk=layerid)
         gslayer = self.cat.get_layer(layer.name)
@@ -266,13 +266,13 @@ class UploaderTests(DjagnoOsgeoMixin):
                ]
         )
         self.assertEqual(5, upload['count'])
-        uploadid = upload['id']
-        uploadobj = UploadedData.objects.get(pk=uploadid)
-        uplayers = UploadLayer.objects.filter(upload=uploadid)
+        upload_id = upload['id']
+        upload_obj = UploadedData.objects.get(pk=upload_id)
+        uplayers = UploadLayer.objects.filter(upload=upload_id)
         layerid = uplayers[0].pk
 
-        upfiles_cnt = UploadFile.objects.filter(upload=uploadid).count()
-        self.assertEqual(5,upfiles_cnt)
+        upfiles_count = UploadFile.objects.filter(upload=upload_id).count()
+        self.assertEqual(5,upfiles_count)
 
         layer = Layer.objects.get(pk=layerid)
         self.assertEqual(layer.language, 'eng')

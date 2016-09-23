@@ -152,8 +152,8 @@ class UploadedData(models.Model):
         size = 0
         if not self.size or self.size == 0:
             if self.uploadfile_set.count() > 0:
-                for uf in self.uploadfile_set.all():
-                    size += uf.file.size
+                for uploadfile in self.uploadfile_set.all():
+                    size += uploadfile.file.size
         self.size = size
         self.save()
         return sizeof_fmt(self.size)
