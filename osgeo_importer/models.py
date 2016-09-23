@@ -150,7 +150,7 @@ class UploadedData(models.Model):
         """Humanizes the upload file size.
         """
         size = 0
-        if not self.size or self.size == 0:
+        if not self.size:
             if self.uploadfile_set.count() > 0:
                 for uploadfile in self.uploadfile_set.all():
                     size += uploadfile.file.size
