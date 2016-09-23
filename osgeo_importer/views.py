@@ -80,21 +80,31 @@ class FileAddView(FormView, ImportHelper, JSONResponseMixin):
     template_name = 'osgeo_importer/new.html'
     json = False
 
-    def form_valid(self, form):
-        upload = UploadedData.objects.create(user=self.request.user)
-        upload_names = [
-            os.path.basename(item.name) for item in form.cleaned_data['file']
-        ]
+    def upload_name(self, paths):
+        """Attempt to generate a name for an upload containing given paths.
+
+        If there is not one obvious name, return None.
+        """
+        upload_names = [os.path.basename(path) for path in paths]
+        name = None
+        # If there's just one path, use that
         if len(upload_names) == 1:
-            upload.name = upload_names[0]
+            name = upload_names[0]
         else:
-            # Generate name based on shared prefix (e.g. a.foo, a.bar -> a)
+            # Try to find a shared filename (e.g. a.foo, a.bar -> a).
             counter = collections.Counter([
                 os.path.splitext(upload_name)[0]
                 for upload_name in upload_names
             ])
             if len(counter) == 1:
-                upload.name = counter.keys()[0]
+                name = counter.keys()[0]
+        return name
+
+    def form_valid(self, form):
+        upload = UploadedData.objects.create(user=self.request.user)
+        # Try to guess a helpful name for the upload, otherwise whatever
+        upload.name = self.upload_name(
+            item.name for item in form.cleaned_data['file'])
         upload.save()
 
         # Create Upload Directory based on Upload PK
