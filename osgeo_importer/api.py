@@ -56,11 +56,11 @@ class UploadedLayerResource(ModelResource):
         """
         self.method_check(request, allowed=['post'])
 
-        b = Bundle()
-        b.request = request
+        bundle = Bundle()
+        bundle.request = request
 
         try:
-            obj = self.obj_get(b, pk=kwargs.get('pk'))
+            obj = self.obj_get(bundle, pk=kwargs.get('pk'))
         except UploadLayer.DoesNotExist:
             raise ImmediateHttpResponse(response=http.HttpNotFound())
 
@@ -84,7 +84,7 @@ class UploadedLayerResource(ModelResource):
         import_result = import_object.delay(uploaded_file.id, configuration_options=configuration_options)
 
         # query the db again for this object since it may have been updated during the import
-        obj = self.obj_get(b, pk=kwargs.get('pk'))
+        obj = self.obj_get(bundle, pk=kwargs.get('pk'))
         obj.task_id = import_result.id
         obj.save()
 
