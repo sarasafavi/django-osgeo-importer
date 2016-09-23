@@ -148,12 +148,11 @@ class UploaderTests(DjagnoOsgeoMixin):
         return layer_results[0]
 
     def generic_api_upload(self, files, configuration_options=None):
-        """
-        Tests the import api.
+        """Tests the import api.
         """
         c = AdminClient()
         c.login_as_non_admin()
-        
+
         # Upload Files
         if isinstance(files, type(str())):
             files = [files]
@@ -182,16 +181,19 @@ class UploaderTests(DjagnoOsgeoMixin):
         # Configure Uploaded Files
         uploadid = content['id']
         upload_layers = UploadLayer.objects.filter(upload_id=uploadid)
-        
+
         for upload_layer in upload_layers:
             for config in configuration_options:
                 if config['upload_file_name'] == upload_layer.name:
                     payload = config['config']
-                    response = c.post('/importer-api/data-layers/{0}/configure/'.format(upload_layer.id), data=json.dumps(payload),
-                                   content_type='application/json')
+                    url = '/importer-api/data-layers/{0}/configure/'.format(upload_layer.id)
+                    response = c.post(
+                        url, data=json.dumps(payload),
+                        content_type='application/json'
+                    )
                     self.assertTrue(response.status_code, 200)
-                    response = c.get('/importer-api/data-layers/{0}/'.format(upload_layer.id),
-                                   content_type='application/json')
+                    url = '/importer-api/data-layers/{0}/'.format(upload_layer.id),
+                    response = c.get(url, content_type='application/json')
                     self.assertTrue(response.status_code, 200)
 
         return content
@@ -210,8 +212,7 @@ class UploaderTests(DjagnoOsgeoMixin):
         return layer
 
     def test_multi_upload(self):
-        """
-        Tests Uploading Multiple Files
+        """Tests Uploading Multiple Files
         """
         upload = self.generic_api_upload(
             ['boxes_with_year_field.zip',
@@ -228,8 +229,7 @@ class UploaderTests(DjagnoOsgeoMixin):
         self.assertEqual(9, upload['count'])
 
     def test_upload_with_slds(self):
-        """
-        Tests Uploading sld
+        """Tests Uploading sld
         """
         upload = self.generic_api_upload(
             ['boxes_with_date.zip',
@@ -256,8 +256,7 @@ class UploaderTests(DjagnoOsgeoMixin):
         self.assertEqual('boxes.sld',default_style.filename)
 
     def test_upload_with_metadata(self):
-        """
-        Tests Uploading metadata
+        """Tests Uploading metadata
         """
         upload = self.generic_api_upload(
             ['boxes_with_date.zip',
