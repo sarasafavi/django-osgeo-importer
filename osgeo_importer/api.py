@@ -56,8 +56,7 @@ class UploadedLayerResource(ModelResource):
         """
         self.method_check(request, allowed=['post'])
 
-        bundle = Bundle()
-        bundle.request = request
+        bundle = Bundle(request=request)
 
         try:
             obj = self.obj_get(bundle, pk=pk)
