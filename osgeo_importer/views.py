@@ -81,6 +81,11 @@ class FileAddView(FormView, ImportHelper, JSONResponseMixin):
 
     def form_valid(self, form):
         upload = UploadedData.objects.create(user=self.request.user)
+        upload_names = [
+            os.path.basename(item.name) for item in form.cleaned_data['file']
+        ]
+        if len(upload_names) == 1:
+            upload.name = upload_names[0]
         upload.save()
 
         # Create Upload Directory based on Upload PK
