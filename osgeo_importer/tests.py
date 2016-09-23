@@ -192,7 +192,7 @@ class UploaderTests(DjagnoOsgeoMixin):
                         content_type='application/json'
                     )
                     self.assertTrue(response.status_code, 200)
-                    url = '/importer-api/data-layers/{0}/'.format(upload_layer.id),
+                    url = '/importer-api/data-layers/{0}/'.format(upload_layer.id)
                     response = c.get(url, content_type='application/json')
                     self.assertTrue(response.status_code, 200)
 
