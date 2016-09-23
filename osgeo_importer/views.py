@@ -2,6 +2,7 @@ import os
 import json
 import logging
 import shutil
+import collections
 from django.http import HttpResponse
 from django.views.generic import FormView, ListView, TemplateView
 from django.core.urlresolvers import reverse_lazy
@@ -86,6 +87,14 @@ class FileAddView(FormView, ImportHelper, JSONResponseMixin):
         ]
         if len(upload_names) == 1:
             upload.name = upload_names[0]
+        else:
+            # Generate name based on shared prefix (e.g. a.foo, a.bar -> a)
+            counter = collections.Counter([
+                os.path.splitext(upload_name)[0]
+                for upload_name in upload_names
+            ])
+            if len(counter) == 1:
+                upload.name = counter.keys()[0]
         upload.save()
 
         # Create Upload Directory based on Upload PK
