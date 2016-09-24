@@ -133,7 +133,7 @@ class FileAddView(FormView, ImportHelper, JSONResponseMixin):
                     upload.uploadlayer_set.add(
                         UploadLayer(
                             upload_file=upfile,
-                            name=upfile_basename,
+                            name=layer.get('layer_name'),
                             fields=layer.get('fields', {}),
                             index=layer.get('index'),
                             feature_count=layer.get('feature_count', None),
